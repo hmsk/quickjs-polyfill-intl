@@ -53,6 +53,11 @@ describe 'granular features (_all variants — standalone)' do
     vm = Quickjs::VM.new(features: [:polyfill_intl_durationformat_all])
     _(vm.eval_code('new Intl.DurationFormat("en").format({ hours: 1, minutes: 30 })')).must_equal '1 hr., 30 min.'
   end
+
+  it 'collator' do
+    vm = Quickjs::VM.new(features: [:polyfill_intl_collator_all])
+    _(vm.eval_code('["banana", "apple", "cherry"].sort(new Intl.Collator("en").compare)')).must_equal %w[apple banana cherry]
+  end
 end
 
 describe 'minimal features (deps provided in order)' do
@@ -60,6 +65,7 @@ describe 'minimal features (deps provided in order)' do
     features = %i[
       polyfill_intl_getcanonicallocales
       polyfill_intl_locale
+      polyfill_intl_collator
       polyfill_intl_listformat
       polyfill_intl_pluralrules
       polyfill_intl_numberformat

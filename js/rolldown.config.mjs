@@ -9,6 +9,7 @@ const output = (name) => ({
 export default [
   defineConfig({ input: "src/getcanonicallocales.js",    output: output("getcanonicallocales") }),
   defineConfig({ input: "src/locale.js",                 output: output("locale") }),
+  defineConfig({ input: "src/collator-en.js",            output: output("collator-en") }),
   defineConfig({ input: "src/displaynames-en.js",        output: output("displaynames-en") }),
   defineConfig({ input: "src/listformat-en.js",          output: output("listformat-en") }),
   defineConfig({ input: "src/pluralrules-en.js",         output: output("pluralrules-en") }),

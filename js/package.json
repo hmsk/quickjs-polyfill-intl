@@ -9,6 +9,7 @@
     "rolldown": "^1.0.0-rc.14"
   },
   "dependencies": {
+    "@formatjs/intl-collator": "^0.2.3",
     "@formatjs/intl-datetimeformat": "^7.3.1",
     "@formatjs/intl-displaynames": "^7.3.9",
     "@formatjs/intl-durationformat": "^0.10.13",
