@@ -67,9 +67,11 @@ vm = Quickjs::VM.new(features: [:polyfill_intl_datetimeformat_all, :polyfill_int
 |---|---|---|---|
 | `quickjs-polyfill-intl/getcanonicallocales` | `:polyfill_intl_getcanonicallocales` | `:polyfill_intl_getcanonicallocales_all` | — |
 | `quickjs-polyfill-intl/locale` | `:polyfill_intl_locale` | `:polyfill_intl_locale_all` | getcanonicallocales |
+| `quickjs-polyfill-intl/collator` | `:polyfill_intl_collator` | `:polyfill_intl_collator_all` | locale |
 | `quickjs-polyfill-intl/displaynames` | `:polyfill_intl_displaynames` | `:polyfill_intl_displaynames_all` | locale |
 | `quickjs-polyfill-intl/listformat` | `:polyfill_intl_listformat` | `:polyfill_intl_listformat_all` | locale |
 | `quickjs-polyfill-intl/pluralrules` | `:polyfill_intl_pluralrules` | `:polyfill_intl_pluralrules_all` | locale |
+| `quickjs-polyfill-intl/segmenter` | `:polyfill_intl_segmenter` | `:polyfill_intl_segmenter_all` | locale |
 | `quickjs-polyfill-intl/numberformat` | `:polyfill_intl_numberformat` | `:polyfill_intl_numberformat_all` | pluralrules |
 | `quickjs-polyfill-intl/relativetimeformat` | `:polyfill_intl_relativetimeformat` | `:polyfill_intl_relativetimeformat_all` | numberformat |
 | `quickjs-polyfill-intl/datetimeformat` | `:polyfill_intl_datetimeformat` | `:polyfill_intl_datetimeformat_all` | numberformat |
@@ -97,6 +99,7 @@ Requires Node.js and npm.
 - `lib/quickjs-polyfill-intl/vendor/` ([bundled and minified from `js/`](https://github.com/hmsk/quickjs-polyfill-intl/tree/main/js))
   - MIT License Copyright (c) 2022 FormatJS
     - [@formatjs/intl-supportedvaluesof](https://github.com/formatjs/formatjs/blob/main/packages/intl-supportedvaluesof/LICENSE.md)
+    - [@formatjs/intl-segmenter](https://github.com/formatjs/formatjs/blob/main/packages/intl-segmenter/LICENSE.md)
   - MIT License Copyright (c) 2023 FormatJS
     - [@formatjs/intl-getcanonicallocales](https://github.com/formatjs/formatjs/blob/main/packages/intl-getcanonicallocales/LICENSE.md)
     - [@formatjs/intl-locale](https://github.com/formatjs/formatjs/blob/main/packages/intl-locale/LICENSE.md)
@@ -111,5 +114,6 @@ Requires Node.js and npm.
     - [@formatjs/intl-localematcher](https://github.com/formatjs/formatjs/blob/main/packages/intl-localematcher/LICENSE.md)
   - MIT License Copyright (c) 2026 FormatJS
     - [@formatjs/bigdecimal](https://github.com/formatjs/formatjs/blob/main/packages/bigdecimal/LICENSE.md)
+    - [@formatjs/intl-collator](https://github.com/formatjs/formatjs/blob/main/packages/intl-collator/LICENSE.md)
 
 Otherwise, [the MIT License, Copyright 2026 by Kengo Hamasaki](/LICENSE).
