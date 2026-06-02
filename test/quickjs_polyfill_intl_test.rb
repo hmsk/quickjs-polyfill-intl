@@ -58,6 +58,12 @@ describe 'granular features (_all variants — standalone)' do
     vm = Quickjs::VM.new(features: [:polyfill_intl_collator_all])
     _(vm.eval_code('["banana", "apple", "cherry"].sort(new Intl.Collator("en").compare)')).must_equal %w[apple banana cherry]
   end
+
+  it 'segmenter' do
+    vm = Quickjs::VM.new(features: [:polyfill_intl_segmenter_all])
+    _(vm.eval_code('[...new Intl.Segmenter("en", { granularity: "word" }).segment("Hello world")].map(s => s.segment)'))
+      .must_equal ['Hello', ' ', 'world']
+  end
 end
 
 describe 'minimal features (deps provided in order)' do
@@ -66,6 +72,7 @@ describe 'minimal features (deps provided in order)' do
       polyfill_intl_getcanonicallocales
       polyfill_intl_locale
       polyfill_intl_collator
+      polyfill_intl_segmenter
       polyfill_intl_listformat
       polyfill_intl_pluralrules
       polyfill_intl_numberformat
