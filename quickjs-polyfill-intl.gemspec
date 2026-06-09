@@ -24,5 +24,5 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'quickjs', '>= 0.19.0.pre1'
+  spec.add_runtime_dependency 'quickjs', '>= 0.19.0.pre2'
 end
