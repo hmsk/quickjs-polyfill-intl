@@ -136,3 +136,14 @@ describe 'constants' do
     _(proc { NS::DATETIMEFORMAT }).must_raise NameError
   end
 end
+
+describe 'RBS signatures' do
+  SIG = File.expand_path('../sig/quickjs-polyfill-intl.rbs', __dir__)
+
+  it 'declares exactly the constants the library defines' do
+    declared = File.read(SIG).scan(/^ {6}([A-Z][A-Z0-9_]*): Symbol$/).flatten.sort
+    actual = Quickjs::Polyfill::Intl.constants.grep(/\A[A-Z][A-Z0-9_]*\z/)
+                                    .reject { _1 == :VERSION }.map(&:to_s).sort
+    _(declared).must_equal actual
+  end
+end

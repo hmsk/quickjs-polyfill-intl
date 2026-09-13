@@ -17,4 +17,11 @@ namespace :js do
   end
 end
 
-task default: :test
+namespace :rbs do
+  desc 'Validate RBS type definitions'
+  task :validate do
+    sh RbConfig.ruby, '-S', 'rbs', '-I', 'sig', 'validate'
+  end
+end
+
+task default: %i[test rbs:validate]
