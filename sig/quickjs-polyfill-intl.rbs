@@ -1,0 +1,44 @@
+module Quickjs
+  module Polyfill
+    module Intl
+      VERSION: String
+
+      # getcanonicallocales
+      GET_CANONICAL_LOCALES: Symbol
+      GET_CANONICAL_LOCALES_ALL: Symbol
+      # locale
+      LOCALE: Symbol
+      LOCALE_ALL: Symbol
+      # collator
+      COLLATOR: Symbol
+      COLLATOR_ALL: Symbol
+      # displaynames
+      DISPLAY_NAMES: Symbol
+      DISPLAY_NAMES_ALL: Symbol
+      # listformat
+      LIST_FORMAT: Symbol
+      LIST_FORMAT_ALL: Symbol
+      # pluralrules
+      PLURAL_RULES: Symbol
+      PLURAL_RULES_ALL: Symbol
+      # segmenter
+      SEGMENTER: Symbol
+      SEGMENTER_ALL: Symbol
+      # numberformat
+      NUMBER_FORMAT: Symbol
+      NUMBER_FORMAT_ALL: Symbol
+      # relativetimeformat
+      RELATIVE_TIME_FORMAT: Symbol
+      RELATIVE_TIME_FORMAT_ALL: Symbol
+      # datetimeformat
+      DATE_TIME_FORMAT: Symbol
+      DATE_TIME_FORMAT_ALL: Symbol
+      # supportedvaluesof
+      SUPPORTED_VALUES_OF: Symbol
+      SUPPORTED_VALUES_OF_ALL: Symbol
+      # durationformat
+      DURATION_FORMAT: Symbol
+      DURATION_FORMAT_ALL: Symbol
+    end
+  end
+end

@@ -7,3 +7,4 @@ gemspec
 gem 'quickjs', '>= 0.19.0'
 gem 'minitest'
 gem 'rake'
+gem 'rbs'

@@ -23,6 +23,13 @@ Each Intl API has its own require path. Requiring a path registers two feature s
 - **`:<name>`** — the API's own bundle only; you must include all dependencies in `features:` yourself (in order).
 - **`:<name>_all`** — a self-contained bundle with all dependencies included; works standalone.
 
+Every symbol is also exposed as a constant under `Quickjs::Polyfill::Intl`, which is the preferred way to reference them — a misspelling raises `NameError` instead of silently passing an unregistered symbol. The constant's value *is* the symbol, so the two forms are interchangeable and can be mixed freely in one `features:` list.
+
+```rb
+Quickjs::Polyfill::Intl::DATE_TIME_FORMAT      # => :polyfill_intl_datetimeformat
+Quickjs::Polyfill::Intl::DATE_TIME_FORMAT_ALL  # => :polyfill_intl_datetimeformat_all
+```
+
 ### Standalone (`_all`)
 
 The simplest way: one symbol, no manual dependency management.
@@ -31,7 +38,7 @@ The simplest way: one symbol, no manual dependency management.
 require 'quickjs'
 require 'quickjs-polyfill-intl/datetimeformat'
 
-vm = Quickjs::VM.new(features: [:polyfill_intl_datetimeformat_all])
+vm = Quickjs::VM.new(features: [Quickjs::Polyfill::Intl::DATE_TIME_FORMAT_ALL])
 vm.eval_code('new Intl.DateTimeFormat("en", { year: "numeric" }).format(new Date(0))')
 # => "1970"
 ```
@@ -44,12 +51,14 @@ Load each API separately and list them all in `features:` in dependency order. U
 require 'quickjs'
 require 'quickjs-polyfill-intl/datetimeformat'  # chains all deps automatically
 
+Intl = Quickjs::Polyfill::Intl
+
 vm = Quickjs::VM.new(features: [
-  :polyfill_intl_getcanonicallocales,
-  :polyfill_intl_locale,
-  :polyfill_intl_pluralrules,
-  :polyfill_intl_numberformat,
-  :polyfill_intl_datetimeformat,
+  Intl::GET_CANONICAL_LOCALES,
+  Intl::LOCALE,
+  Intl::PLURAL_RULES,
+  Intl::NUMBER_FORMAT,
+  Intl::DATE_TIME_FORMAT,
 ])
 ```
 
@@ -58,25 +67,27 @@ vm = Quickjs::VM.new(features: [
 ```rb
 require 'quickjs-polyfill-intl/all'
 
-vm = Quickjs::VM.new(features: [:polyfill_intl_datetimeformat_all, :polyfill_intl_listformat_all])
+Intl = Quickjs::Polyfill::Intl
+
+vm = Quickjs::VM.new(features: [Intl::DATE_TIME_FORMAT_ALL, Intl::LIST_FORMAT_ALL])
 ```
 
 ## Available polyfills
 
-| Require path | Symbol | `_all` symbol | Depends on |
+| Require path | Constant (under `Quickjs::Polyfill::Intl`) | Symbol | Depends on |
 |---|---|---|---|
-| `quickjs-polyfill-intl/getcanonicallocales` | `:polyfill_intl_getcanonicallocales` | `:polyfill_intl_getcanonicallocales_all` | — |
-| `quickjs-polyfill-intl/locale` | `:polyfill_intl_locale` | `:polyfill_intl_locale_all` | getcanonicallocales |
-| `quickjs-polyfill-intl/collator` | `:polyfill_intl_collator` | `:polyfill_intl_collator_all` | locale |
-| `quickjs-polyfill-intl/displaynames` | `:polyfill_intl_displaynames` | `:polyfill_intl_displaynames_all` | locale |
-| `quickjs-polyfill-intl/listformat` | `:polyfill_intl_listformat` | `:polyfill_intl_listformat_all` | locale |
-| `quickjs-polyfill-intl/pluralrules` | `:polyfill_intl_pluralrules` | `:polyfill_intl_pluralrules_all` | locale |
-| `quickjs-polyfill-intl/segmenter` | `:polyfill_intl_segmenter` | `:polyfill_intl_segmenter_all` | locale |
-| `quickjs-polyfill-intl/numberformat` | `:polyfill_intl_numberformat` | `:polyfill_intl_numberformat_all` | pluralrules |
-| `quickjs-polyfill-intl/relativetimeformat` | `:polyfill_intl_relativetimeformat` | `:polyfill_intl_relativetimeformat_all` | numberformat |
-| `quickjs-polyfill-intl/datetimeformat` | `:polyfill_intl_datetimeformat` | `:polyfill_intl_datetimeformat_all` | numberformat |
-| `quickjs-polyfill-intl/supportedvaluesof` | `:polyfill_intl_supportedvaluesof` | `:polyfill_intl_supportedvaluesof_all` | datetimeformat |
-| `quickjs-polyfill-intl/durationformat` | `:polyfill_intl_durationformat` | `:polyfill_intl_durationformat_all` | datetimeformat + listformat |
+| `quickjs-polyfill-intl/getcanonicallocales` | `GET_CANONICAL_LOCALES` / `GET_CANONICAL_LOCALES_ALL` | `:polyfill_intl_getcanonicallocales` / `…_all` | — |
+| `quickjs-polyfill-intl/locale` | `LOCALE` / `LOCALE_ALL` | `:polyfill_intl_locale` / `…_all` | getcanonicallocales |
+| `quickjs-polyfill-intl/collator` | `COLLATOR` / `COLLATOR_ALL` | `:polyfill_intl_collator` / `…_all` | locale |
+| `quickjs-polyfill-intl/displaynames` | `DISPLAY_NAMES` / `DISPLAY_NAMES_ALL` | `:polyfill_intl_displaynames` / `…_all` | locale |
+| `quickjs-polyfill-intl/listformat` | `LIST_FORMAT` / `LIST_FORMAT_ALL` | `:polyfill_intl_listformat` / `…_all` | locale |
+| `quickjs-polyfill-intl/pluralrules` | `PLURAL_RULES` / `PLURAL_RULES_ALL` | `:polyfill_intl_pluralrules` / `…_all` | locale |
+| `quickjs-polyfill-intl/segmenter` | `SEGMENTER` / `SEGMENTER_ALL` | `:polyfill_intl_segmenter` / `…_all` | locale |
+| `quickjs-polyfill-intl/numberformat` | `NUMBER_FORMAT` / `NUMBER_FORMAT_ALL` | `:polyfill_intl_numberformat` / `…_all` | pluralrules |
+| `quickjs-polyfill-intl/relativetimeformat` | `RELATIVE_TIME_FORMAT` / `RELATIVE_TIME_FORMAT_ALL` | `:polyfill_intl_relativetimeformat` / `…_all` | numberformat |
+| `quickjs-polyfill-intl/datetimeformat` | `DATE_TIME_FORMAT` / `DATE_TIME_FORMAT_ALL` | `:polyfill_intl_datetimeformat` / `…_all` | numberformat |
+| `quickjs-polyfill-intl/supportedvaluesof` | `SUPPORTED_VALUES_OF` / `SUPPORTED_VALUES_OF_ALL` | `:polyfill_intl_supportedvaluesof` / `…_all` | datetimeformat |
+| `quickjs-polyfill-intl/durationformat` | `DURATION_FORMAT` / `DURATION_FORMAT_ALL` | `:polyfill_intl_durationformat` / `…_all` | datetimeformat + listformat |
 
 Requiring a path also requires its full dependency chain, so all dependent symbols are registered automatically.
 
