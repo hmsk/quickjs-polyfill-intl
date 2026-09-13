@@ -8,16 +8,39 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    name: Ruby ${{ matrix.ruby }} on ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
         ruby: ['3.2', '3.3', '3.4', '4.0']
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - run: bundle exec rake test
+
+  musl:
+    runs-on: ubuntu-latest
+    name: Ruby ${{ matrix.ruby }} on alpine (musl)
+    container: ruby:${{ matrix.ruby }}-alpine
+    strategy:
+      matrix:
+        # This gem is pure Ruby, so musl adds nothing to its own code. What the
+        # leg covers is the runtime dependency: quickjs is a C extension that
+        # every consumer of this gem has to build, and the polyfills are only
+        # reachable through a VM it compiled. Newest and oldest supported, to
+        # match the main gem's musl leg.
+        ruby:
+          - "4.0"
+          - "3.2"
+
+    steps:
+      - name: Install build dependencies
+        run: apk add --no-cache build-base linux-headers git
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install gems
+        run: bundle install
+      - name: Run the default task
+        run: bundle exec rake
