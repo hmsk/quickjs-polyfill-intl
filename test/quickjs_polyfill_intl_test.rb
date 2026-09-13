@@ -92,3 +92,47 @@ describe 'not applied when feature not enabled' do
     _(Quickjs::VM.new.eval_code('typeof Intl')).must_equal 'undefined'
   end
 end
+
+describe 'constants' do
+  NS = Quickjs::Polyfill::Intl
+
+  it 'exposes every registered symbol as a constant pair' do
+    {
+      NS::GET_CANONICAL_LOCALES => :polyfill_intl_getcanonicallocales,
+      NS::LOCALE => :polyfill_intl_locale,
+      NS::COLLATOR => :polyfill_intl_collator,
+      NS::DISPLAY_NAMES => :polyfill_intl_displaynames,
+      NS::LIST_FORMAT => :polyfill_intl_listformat,
+      NS::PLURAL_RULES => :polyfill_intl_pluralrules,
+      NS::SEGMENTER => :polyfill_intl_segmenter,
+      NS::NUMBER_FORMAT => :polyfill_intl_numberformat,
+      NS::RELATIVE_TIME_FORMAT => :polyfill_intl_relativetimeformat,
+      NS::DATE_TIME_FORMAT => :polyfill_intl_datetimeformat,
+      NS::SUPPORTED_VALUES_OF => :polyfill_intl_supportedvaluesof,
+      NS::DURATION_FORMAT => :polyfill_intl_durationformat
+    }.each do |const, symbol|
+      _(const).must_equal symbol
+    end
+  end
+
+  it 'pairs each constant with its _all variant' do
+    _(NS::DATE_TIME_FORMAT_ALL).must_equal :polyfill_intl_datetimeformat_all
+    _(NS::DURATION_FORMAT_ALL).must_equal :polyfill_intl_durationformat_all
+    _(NS::GET_CANONICAL_LOCALES_ALL).must_equal :polyfill_intl_getcanonicallocales_all
+  end
+
+  it 'works when passed to features:' do
+    vm = Quickjs::VM.new(features: [NS::DATE_TIME_FORMAT_ALL])
+    _(vm.eval_code('new Intl.DateTimeFormat("en", { dateStyle: "long" }).format(new Date(0))'))
+      .must_equal 'January 1, 1970'
+  end
+
+  it 'interoperates with bare symbols in the same features list' do
+    vm = Quickjs::VM.new(features: [NS::GET_CANONICAL_LOCALES, :polyfill_intl_locale, NS::PLURAL_RULES])
+    _(vm.eval_code('new Intl.PluralRules("en").select(1)')).must_equal 'one'
+  end
+
+  it 'raises NameError on a misspelled constant' do
+    _(proc { NS::DATETIMEFORMAT }).must_raise NameError
+  end
+end
